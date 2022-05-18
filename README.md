@@ -1,14 +1,14 @@
 # supportcases
 
 Spark scripts:
-- Script para el procesamiento y transformación inicial de todo el dataset histórico. El cual crea dos datasets, uno histórico para ser catalogado por el servicio de AWS Glue, mientras que el otro dataset contiene los datos para entrenar el modelo.
-- Script de entrenamiento del modelo de clasificación.
-- Script para transformar y añadir datos nuevos.
+- Script for the initial process and transform of the historic dataset. It will create two new datasets, one with the historic data which will be processed by the AWS Glue service and the other dataset will contain only the data that the deep learning model requires for training.
+- Script to train the clasification model.
+- Script to process and transform new data.
 
 Jupyter Notebook:
-- Contiene información relevante del dataset.
-- Contiene los modelos para clasificar los casos en Producto y Sub-producto.
+- Contains relevant information about the dataset.
+- Contains the models used to classify the support cases in Product and Sub-Product.
 
 Función Lambda:
-- Script utilizado para la función Lambda que conecta el endpoint de SageMaker y API Gateway.
+- Script used to setup the Lambda function that will connect the SageMaker endpoint of the model to an API Gateway service.
 
