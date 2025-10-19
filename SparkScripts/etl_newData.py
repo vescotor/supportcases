@@ -6,7 +6,6 @@ import pyspark.pandas as pd
 import re
 #import pandas as pd
 
-# spark-submit --master yarn --deploy-mode client s3://soportedataset/scripts/etl_init.py soportedataset
 
 def run_transform(bucket_name, input_data):	
 	# Create a spark session
@@ -18,9 +17,9 @@ def run_transform(bucket_name, input_data):
     logger.info('Trying to read data now.')
 
     # Read the Historical Data CSV
-    historical_path = 's3://{}/data/historical/'.format(bucket_name)
+    historical_path = 's3://{}.format(bucket_name)
     support_pd = (spark.read.option('multiline', 'true').option('quote', '"').option("header", 'true').option("escape", '\\').option('escape', '"').csv(historical_path))
-    model_path = 's3://{}/data/processed/'.format(bucket_name)
+    model_path = 's3://{}'.format(bucket_name)
     model_pd = (spark.read.option('multiline', 'true').option('quote', '"').option("header", 'true').option("escape", '\\').option('escape', '"').csv(historical_path))
     
     emp_RDD = spark.sparkContext.emptyRDD()
@@ -39,7 +38,7 @@ def run_transform(bucket_name, input_data):
     writer = support_pd.write
     writer.format('csv')
     writer.mode('overwrite')
-    write_path = 's3://{}/data/historical/'.format(bucket_name)
+    write_path = 's3://{}'.format(bucket_name)
     writer.option('path', write_path)
     writer.option("header", "true")
     writer.save()
@@ -79,7 +78,7 @@ def run_transform(bucket_name, input_data):
     writer = model_pd.write
     writer.format('csv')
     writer.mode('overwrite')
-    write_path = 's3://{}/data/processed/'.format(bucket_name)
+    write_path = 's3://{}'.format(bucket_name)
     writer.option('path', write_path)
     writer.option("header", "true")
     writer.save()
