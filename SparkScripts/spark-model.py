@@ -28,7 +28,7 @@ def run_training(bucket_name):
     logger.info('Trying to read data now.')
 
     # Read the Historical Data CSV
-    modeldata_path = 's3://{}/data/processed/'.format(bucket_name)
+    modeldata_path = 's3://{}'.format(bucket_name)
     model_path = 's3://{}/'.format(bucket_name)
     model_pd = (spark.read.option('multiline', 'true').option('quote', '"').option("header", 'true').option("escape", '\\').option('escape', '"').csv(modeldata_path))
 
