@@ -6,7 +6,7 @@ import pyspark.pandas as pd
 import re
 #import pandas as pd
 
-# spark-submit --master yarn --deploy-mode client s3://soportedataset/scripts/etl_init.py soportedataset
+# spark-submit --master yarn --deploy-mode client soportedataset
 
 def run_transform(bucket_name):	
 	# Create a spark session
@@ -18,7 +18,7 @@ def run_transform(bucket_name):
     logger.info('Trying to read data now.')
 
     # Read the Historical Data CSV
-    historical_path = 's3://{}/historical/'.format(bucket_name)
+    historical_path = 's3://{}'.format(bucket_name)
     support_pd = (spark.read.option('multiline', 'true').option('quote', '"').option("header", 'true').option("escape", '\\').option('escape', '"').csv(historical_path))
     support_pd = support_pd.withColumnRenamed("Case Age (days)", "Case Age (days)".replace( "(days)" , "days"))
     support_pd = support_pd.withColumnRenamed("Time to FR (Minutes)", "Time to FR (Minutes)".replace( "(Minutes)" , "Minutes"))
@@ -49,7 +49,7 @@ def run_transform(bucket_name):
     writer = support_pd.write
     writer.format('csv')
     writer.mode('overwrite')
-    write_path = 's3://{}/data/historical/'.format(bucket_name)
+    write_path = 's3://{}'.format(bucket_name)
     writer.option('path', write_path)
     writer.option("header", "true")
     writer.option("quote", '"')
@@ -57,7 +57,7 @@ def run_transform(bucket_name):
     writer.option('escape', '"')
     writer.save()
 
-    support_pd.toPandas().to_csv('s3://{}/data/'.format(bucket_name))
+    support_pd.toPandas().to_csv('s3://{}'.format(bucket_name))
 
     # Prepare the data for model
     #model_pd = support_pd.filter((support_pd.Language == "English")&(support_pd.Case_Record_Type == "Customer Support Case")&(support_pd.Type == "Issue")&(support_pd.Case_Reason == "Account - General")) 
@@ -94,7 +94,7 @@ def run_transform(bucket_name):
     writer = model_pd.write
     writer.format('csv')
     writer.mode('overwrite')
-    write_path = 's3://{}/data/processed/'.format(bucket_name)
+    write_path = 's3://{}'.format(bucket_name)
     writer.option('path', write_path)
     writer.option("header", "true")
     writer.save()
